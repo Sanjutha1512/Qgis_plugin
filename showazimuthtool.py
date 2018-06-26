@@ -25,8 +25,8 @@ class ShowAzimuthTool:
             self.m2 = None            
             
             # Create actions 
-            self.act_show_azimuth = QAction(QIcon('C:\Users\Sanjutha Indrajit\.qgis2\python\plugins\QuickDigitize/showazimuth.png'), QCoreApplication.translate("QuickDigitize", "Show Azimuth"),  self.iface.mainWindow())
-            self.act_s2v= QAction(QIcon('C:\Users\Sanjutha Indrajit\.qgis2\python/plugins/QuickDigitize/select2vertex.png'), QCoreApplication.translate("QuickDigitize", "Select 2 Vertex Points"),  self.iface.mainWindow())
+            self.act_show_azimuth = QAction(QIcon(':plugins/cadtools/icons/showazimuth.png'), QCoreApplication.translate("QuickDigitize", "Show Azimuth"),  self.iface.mainWindow())
+            self.act_s2v= QAction(QIcon(':plugins/cadtools/icons/select2vertex.png'), QCoreApplication.translate("QuickDigitize", "Select 2 Vertex Points"),  self.iface.mainWindow())
             self.act_s2v.setCheckable(True)     
                  
             # Connect to signals for button behaviour      

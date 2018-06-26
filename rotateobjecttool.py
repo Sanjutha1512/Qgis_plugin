@@ -74,7 +74,7 @@ class RotateObjectTool:
     def rotateObject(self,  angle):
         geom = utils.rotate(self.feat.geometry(), self.p1,  angle * math.pi / 180)
         if geom <> None:
-            utils.addGeometryToLayer(geom)
+            utils.addGeometryToLayer(geom,self.iface)
             self.canvas.refresh()
 
         

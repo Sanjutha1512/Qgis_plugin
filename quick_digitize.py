@@ -20,17 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
+from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QFileInfo
 from PyQt4.QtGui import QAction, QIcon, QFileDialog
+from qgis.core import *
 # Initialize Qt resources from file resources.py
 import resources
+
 # Import the code for the dialog
 from quick_digitize_dialog import QuickDigitizeDialog
 from vertexfindertool import VertexFinderTool
 from rotateobjecttool import RotateObjectTool
 from showazimuthtool import ShowAzimuthTool
-import os.path
-
+from addattributetool import AddAttributeTool
+from createpointlayertool import CreatePointLayerTool
+from createlinelayertool import CreateLineLayerTool
+from createpolygonlayertool import CreatePolygonLayerTool
+import os.path, sys
+currentPath = os.path.dirname( __file__ )
 
 class QuickDigitize:
     """QGIS Plugin Implementation."""
@@ -49,13 +55,24 @@ class QuickDigitize:
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
         # initialize locale
-        locale = QSettings().value('locale/userLocale')[0:2]
-        locale_path = os.path.join(
-            self.plugin_dir,
-            'i18n',
-            'QuickDigitize_{}.qm'.format(locale))
+        # locale = QSettings().value('locale/userLocale')[0:2]
+        # locale_path = os.path.join(
+        #     self.plugin_dir,
+        #     'i18n',
+        #     'QuickDigitize_{}.qm'.format(locale))
 
-        if os.path.exists(locale_path):
+        userPluginPath = QFileInfo(QgsApplication.qgisUserDbFilePath()).path()+"/python/plugins/QuickDigitize"  
+        systemPluginPath = QgsApplication.prefixPath()+"/share/qgis/python/plugins/QuickDigitize"
+        locale = QSettings().value("locale/userLocale")
+        myLocale = locale[0:2]       
+            
+        if QFileInfo(userPluginPath).exists():
+          pluginPath = userPluginPath+"/i18n/QuickDigitize_"+myLocale+".qm"
+        elif QFileInfo(systemPluginPath).exists():
+          pluginPath = systemPluginPath+"/i18n/QuickDigitize_"+myLocale+".qm"
+
+        self.locale_path = pluginPath
+        if QFileInfo(self.locale_path).exists():
             self.translator = QTranslator()
             self.translator.load(locale_path)
 
@@ -71,6 +88,11 @@ class QuickDigitize:
         self.toolbar.setObjectName(u'QuickDigitize')
         self.showazimuth = ShowAzimuthTool(self.iface,  self.toolbar)
         self.rotateobject = RotateObjectTool(self.iface,  self.toolbar)
+        self.addattribute = AddAttributeTool(self.iface, self.toolbar)
+        self.createpointlayer= CreatePointLayerTool(self.iface, self.toolbar)
+        self.createlinelayer= CreateLineLayerTool(self.iface, self.toolbar)
+        self.createpolygonlayer= CreatePolygonLayerTool(self.iface, self.toolbar)
+
         self.dlg.lineEdit.clear()
         self.dlg.pushButton.clicked.connect(self.select_output_file)
 
@@ -187,6 +209,7 @@ class QuickDigitize:
                 self.tr(u'&QuickDigitize'),
                 action)
             self.iface.removeToolBarIcon(action)
+
 
         # remove the toolbar
         del self.toolbar

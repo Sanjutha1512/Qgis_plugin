@@ -8,7 +8,8 @@ import math
 import re
 
 
-def addGeometryToLayer(g):
+
+def addGeometryToLayer(g,iface):
     pointName = "Layer Points"
     lineName = "Layer Lines"
     polygonName = "Layer Polygons"
@@ -28,7 +29,7 @@ def addGeometryToLayer(g):
     else:
         return
     
-    if getCadLayerByName(theName) == None:
+    if getCadLayerByName(theName,iface) == None:
         vl = QgsVectorLayer(theType, theName, "memory")
         pr = vl.dataProvider()
         feat = QgsFeature()
@@ -37,21 +38,23 @@ def addGeometryToLayer(g):
         vl.updateExtents()
         QgsMapLayerRegistry.instance().addMapLayer(vl, True)
     else:
-        layer = getCadLayerByName(theName) 
+        layer = getCadLayerByName(theName,iface) 
         pr = layer.dataProvider()
         feat = QgsFeature()
         feat.setGeometry(g)
         pr.addFeatures([feat])
         layer.updateExtents()
 
-def getCadLayerByName(cadname):
-    layermap = QgsMapLayerRegistry.instance().mapLayers()
-    for name, layer in layermap.iteritems():
-        if layer.name() == cadname:
-            if layer.isValid():
-                return layer
-            else:
-                return None        
+def getCadLayerByName(cadname, iface):
+    # layermap = QgsMapLayerRegistry.instance().mapLayers()
+    # for name, layer in layermap.iteritems():
+    #     if layer.name() == cadname:
+    #         if layer.isValid():
+    #             return layer
+    #         else:
+    #             return None 
+        layer = iface.activeLayer()  
+        return layer     
 
 def azimuth(p1,  p2):
     dx = p2.x()-p1.x()
