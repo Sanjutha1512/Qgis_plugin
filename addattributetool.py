@@ -9,7 +9,6 @@ import sys
 
 ## Import own classes and tools.
 from addattributegui import AddAttributeGui
-from vertexandobjectfindertool import VertexAndObjectFinderTool
 import utils
 
 class AddAttributeTool:
@@ -20,63 +19,61 @@ class AddAttributeTool:
         self.canvas = self.iface.mapCanvas()
         flags = Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMaximizeButtonHint  
         self.ctrl = AddAttributeGui(self.iface.mainWindow(),  flags)
-        #self.attribute =[]
         self.attribute = self.ctrl.attribute_list
-
-        
-        self.p1 = None
-        self.m1 = None
-        self.feat = None
-        self.rb = None
         
         self.act_addattribute = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
-        self.act_selectvertexandobject= QAction(QIcon(":/plugins/cadtools/icons/selectvertexandfeature.png"), QCoreApplication.translate("ctools", "Select Vertex and Object"),  self.iface.mainWindow())
-        self.act_selectvertexandobject.setCheckable(True)
+        if self.layer.isEditable():
+            self.act_addattribute.setEnabled(True)
+            self.layer.editingStopped.connect(self.toggle)
+        else:
+            self.act_addattribute.setEnabled(False)
+            self.layer.editingStarted.connect(self.toggle)
              
         self.act_addattribute.triggered.connect(self.showDialog)
-        self.canvas.mapToolSet.connect(self.deactivate)
+        self.iface.currentLayerChanged["QgsMapLayer *"].connect(self.toggle)
+        self.canvas.selectionChanged.connect(self.toggle)
+        
+
 
         toolBar.addSeparator()
-        toolBar.addAction(self.act_selectvertexandobject)
         toolBar.addAction(self.act_addattribute)
+        # self.iface.editMenu().addAction(self.act_addattribute)
+
 
         
-        self.act_selectvertexandobject.triggered.connect(self.selectvertexandobject)
-        self.canvas.mapToolSet.connect(self.deactivate)
-  
+
+
+    def toggle(self):
+        if self.layer and self.layer.type() == self.layer.VectorLayer:
+            # disconnect all previously connect signals in current layer
+            try:
+                self.layer.editingStarted.disconnect(self.toggle)
+            except:
+                pass
+            try:
+                self.layer.editingStopped.disconnect(self.toggle)
+            except:
+                pass
             
-        self.tool = VertexAndObjectFinderTool(self.canvas)   
-
-
-    def selectvertexandobject(self):
-        mc = self.canvas
-        mc.setMapTool(self.tool)
-        
-        self.act_selectvertexandobject.setChecked(True)       
- 
-        self.tool.vertexAndObjectFound.connect(self.storeVertexAndObject)
- 
-        pass
-        
-    
-    def storeVertexAndObject(self,  result):
-        self.p1 = result[0]
-        self.feat = result[1]
-        self.m1 = result[2]
-        self.rb = result[3]
+            # check if current layer is editable and has selected features
+            # and decide whether the plugin button should be enable or disable
+            if self.layer.isEditable():
+                self.act_addattribute.setEnabled(True)
+                self.layer.editingStopped.connect(self.toggle)
+            # layer is not editable    
+            else:
+                self.act_addattribute.setEnabled(False)
+                self.layer.editingStarted.connect(self.toggle)
+        else:
+            self.act_addattribute.setEnabled(False)
 
     def showDialog(self):
-
-        if self.p1 == None or self.feat == None:
-            QMessageBox.information(None, QCoreApplication.translate("ctools", "Cancel"), QCoreApplication.translate("ctools", "Not enough objects selected."))
-        else:
-           
-            self.ctrl.initGui()
-            self.ctrl.show()
-            self.ctrl.accept()
-            
-            self.ctrl.okButton.clicked.connect(self.newattribute)
-            self.ctrl.okButton.clicked.connect(self.close_func)
+        self.ctrl.initGui()
+        self.ctrl.show()
+        self.ctrl.accept()
+        
+        self.ctrl.okButton.clicked.connect(self.newattribute)
+        self.ctrl.okButton.clicked.connect(self.close_func)
         pass
 
 
@@ -85,18 +82,15 @@ class AddAttributeTool:
         self.newfeature = QgsFeature(self.layer.fields())
         self.newfeature_list = self.layer.selectedFeatures()
         self.newfeature = self.newfeature_list[0]
-        self.layer.startEditing()
+        # self.layer.startEditing()
         self.layer.updateFields()
         
         self.newfeature.setAttributes(self.attribute)
         self.layer.updateFeature(self.newfeature)
-        self.layer.commitChanges()
+        # self.layer.commitChanges()
         del self.newfeature
         del self.attribute
 
-    def deactivate(self):
-        self.p1 = None
-        self.act_selectvertexandobject.setChecked(False)
 
     def close_func(self):
         self.ctrl.close()

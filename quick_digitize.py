@@ -20,9 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QFileInfo
-from PyQt4.QtGui import QAction, QIcon, QFileDialog
+from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QFileInfo, QSize
+from PyQt4.QtGui import QAction, QIcon, QFileDialog, QToolBar
 from qgis.core import *
+from qgis.gui import *
+from qgis.utils import *
 # Initialize Qt resources from file resources.py
 import resources
 
@@ -92,6 +94,10 @@ class QuickDigitize:
         self.createpointlayer= CreatePointLayerTool(self.iface, self.toolbar)
         self.createlinelayer= CreateLineLayerTool(self.iface, self.toolbar)
         self.createpolygonlayer= CreatePolygonLayerTool(self.iface, self.toolbar)
+
+        toolbars = iface.mainWindow().findChildren(QToolBar)
+        for self.toolbar in toolbars:
+    		self.toolbar.setIconSize(QSize(32,48))
 
         self.dlg.lineEdit.clear()
         self.dlg.pushButton.clicked.connect(self.select_output_file)

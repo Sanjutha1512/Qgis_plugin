@@ -17,6 +17,7 @@ class ShowAzimuthTool:
             # Save reference to the QGIS interface
             self.iface = iface
             self.canvas = self.iface.mapCanvas()
+            self.layer=self.iface.activeLayer()
             
             # Points and Markers
             self.p1 = None
@@ -28,6 +29,18 @@ class ShowAzimuthTool:
             self.act_show_azimuth = QAction(QIcon(':plugins/cadtools/icons/showazimuth.png'), QCoreApplication.translate("QuickDigitize", "Show Azimuth"),  self.iface.mainWindow())
             self.act_s2v= QAction(QIcon(':plugins/cadtools/icons/select2vertex.png'), QCoreApplication.translate("QuickDigitize", "Select 2 Vertex Points"),  self.iface.mainWindow())
             self.act_s2v.setCheckable(True)     
+            if self.layer.isEditable():
+                self.act_show_azimuth.setEnabled(True)
+                self.act_s2v.setEnabled(True)
+                self.layer.editingStopped.connect(self.toggle)
+            else:
+                self.act_show_azimuth.setEnabled(False)
+                self.act_s2v.setEnabled(False)
+                self.layer.editingStarted.connect(self.toggle)
+                 
+            
+            self.iface.currentLayerChanged["QgsMapLayer *"].connect(self.toggle)
+            self.canvas.selectionChanged.connect(self.toggle)
                  
             # Connect to signals for button behaviour      
             self.act_show_azimuth.triggered.connect(self.showDialog)
@@ -39,7 +52,35 @@ class ShowAzimuthTool:
             toolBar.addAction(self.act_show_azimuth)
                         
             # Get the tool
-            self.tool = VertexFinderTool(self.canvas)           
+            self.tool = VertexFinderTool(self.canvas) 
+
+
+        def toggle(self):
+            if self.layer and self.layer.type() == self.layer.VectorLayer:
+                # disconnect all previously connect signals in current layer
+                try:
+                    self.layer.editingStarted.disconnect(self.toggle)
+                except:
+                    pass
+                try:
+                    self.layer.editingStopped.disconnect(self.toggle)
+                except:
+                    pass
+                
+                # check if current layer is editable and has selected features
+                # and decide whether the plugin button should be enable or disable
+                if self.layer.isEditable():
+                    self.act_show_azimuth.setEnabled(True)
+                    self.act_s2v.setEnabled(True)
+                    self.layer.editingStopped.connect(self.toggle)
+                # layer is not editable    
+                else:
+                    self.act_show_azimuth.setEnabled(False)
+                    self.act_s2v.setEnabled(False)
+                    self.layer.editingStarted.connect(self.toggle)
+            else:
+                self.act_show_azimuth.setEnabled(False)
+                self.act_s2v.setEnabled(False)       
             
         def s2v(self):
             mc = self.canvas
