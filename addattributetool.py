@@ -9,6 +9,7 @@ import sys
 
 ## Import own classes and tools.
 from addattributegui import AddAttributeGui
+from dialog_1 import Main_1
 import utils
 
 class AddAttributeTool:
@@ -20,8 +21,9 @@ class AddAttributeTool:
         flags = Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMaximizeButtonHint  
         self.ctrl = AddAttributeGui(self.iface.mainWindow(),  flags)
         self.attribute = self.ctrl.attribute_list
-        
+        self.ctrl_1 = Main_1()
         self.act_addattribute = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
+        self.act_dialog = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
         if self.layer.isEditable():
             self.act_addattribute.setEnabled(True)
             self.layer.editingStopped.connect(self.toggle)
@@ -37,6 +39,7 @@ class AddAttributeTool:
 
         toolBar.addSeparator()
         toolBar.addAction(self.act_addattribute)
+        toolBar.addAction(self.act_dialog)
         # self.iface.editMenu().addAction(self.act_addattribute)
 
 
@@ -71,7 +74,6 @@ class AddAttributeTool:
         self.ctrl.initGui()
         self.ctrl.show()
         self.ctrl.accept()
-        
         self.ctrl.okButton.clicked.connect(self.newattribute)
         self.ctrl.okButton.clicked.connect(self.close_func)
         pass
@@ -82,7 +84,6 @@ class AddAttributeTool:
         self.newfeature = QgsFeature(self.layer.fields())
         self.newfeature_list = self.layer.selectedFeatures()
         self.newfeature = self.newfeature_list[0]
-        # self.layer.startEditing()
         self.layer.updateFields()
         
         self.newfeature.setAttributes(self.attribute)
