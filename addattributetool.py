@@ -21,15 +21,20 @@ class AddAttributeTool:
         flags = Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMaximizeButtonHint  
         self.ctrl = AddAttributeGui(self.iface.mainWindow(),  flags)
         self.attribute = self.ctrl.attribute_list
-        self.ctrl_1 = Main_1()
+        # self.ctrl_1 = Main_1()
         self.act_addattribute = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
-        self.act_dialog = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
-        if self.layer.isEditable():
-            self.act_addattribute.setEnabled(True)
-            self.layer.editingStopped.connect(self.toggle)
+        # self.act_dialog = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
+        try:
+                if self.layer.isEditable():
+                    self.act_addattribute.setEnabled(True)
+                    self.layer.editingStopped.connect(self.toggle)
+        except:
+            pass
+            
         else:
             self.act_addattribute.setEnabled(False)
             self.layer.editingStarted.connect(self.toggle)
+             
              
         self.act_addattribute.triggered.connect(self.showDialog)
         self.iface.currentLayerChanged["QgsMapLayer *"].connect(self.toggle)
@@ -39,7 +44,7 @@ class AddAttributeTool:
 
         toolBar.addSeparator()
         toolBar.addAction(self.act_addattribute)
-        toolBar.addAction(self.act_dialog)
+        # toolBar.addAction(self.act_dialog)
         # self.iface.editMenu().addAction(self.act_addattribute)
 
 
