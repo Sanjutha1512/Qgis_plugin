@@ -26,6 +26,7 @@ except AttributeError:
 
 
 class Ui_AddAttribute(object):
+    
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(595, 455)
@@ -60,6 +61,7 @@ class Ui_AddAttribute(object):
         self.lineEdit = QtGui.QLineEdit(Dialog)
         self.lineEdit.setGeometry(QtCore.QRect(160, 200, 111, 22))
         self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
+        count=0
 
         self.retranslateUi(Dialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), Dialog.accept)
@@ -114,19 +116,14 @@ class Ui_AddAttribute(object):
         
     def delUi_1(self,Dialog):
 
-        self.lineEdit_2.deleteLater()
-        self.label_5.deleteLater()
-        self.label_6.deleteLater()
-
-        self.lineEdit_3.deleteLater()
-
-        self.label_7.deleteLater()
-
-        self.lineEdit_4.deleteLater()
-
-        self.label_8.deleteLater()
-
-        self.lineEdit_5.deleteLater()
+            self.lineEdit_2.deleteLater()
+            self.label_5.deleteLater()
+            self.label_6.deleteLater()
+            self.lineEdit_3.deleteLater()
+            self.label_7.deleteLater()
+            self.lineEdit_4.deleteLater()
+            self.label_8.deleteLater()
+            self.lineEdit_5.deleteLater()
 
 
     def retranslateUi(self, Dialog):
