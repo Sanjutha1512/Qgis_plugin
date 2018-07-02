@@ -1,8 +1,8 @@
-# -*- coding: latin1 -*-
 # Import the PyQt and QGIS libraries
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
+from qgis.PyQt.QtCore import *
 
 # Initialize Qt resources from file resources.py
 #from cadtools import resources
@@ -12,81 +12,110 @@ from spline import Spline
 
 class SplineTool():
     
-        def __init__(self, iface, toolbar):
-            # Save reference to the QGIS interface
-            self.iface = iface
-            self.canvas = self.iface.mapCanvas()
-            mc = self.canvas
-            self.tool = None
-            self.connectedLayer = None
-            
-            # Create actions 
-            self.action_spline = QAction(QIcon(":/plugins/spline/icon.png"), QCoreApplication.translate("ctools", "Digitize Spline Curves"),  self.iface.mainWindow())
-            self.action_spline.setObjectName("actionSpline")
-            self.action_spline.setEnabled(False)
-            self.action_spline.setCheckable(True)            
-            
-            # Get the tool
-            self.tool = Spline(self.iface)
-
-            # Connect to signals for button behaviour
-            self.action_spline.triggered.connect(self.digitize)
-            self.iface.currentLayerChanged.connect(self.layerChanged)
-            self.layerChanged() # to enable when plugin is loaded
-
-            mc.mapToolSet.connect(self.deactivate)
-            
-            # Add actions to the toolbar
-            toolbar.addSeparator()
-            toolbar.addAction(self.action_spline)
-            
-                        
-        def __del__(self):
-            self.disconnectLayer()
-            self.iface.removeToolBarIcon(self.action_spline)
-         
-        def digitize(self):
-            mc = self.canvas
-            layer = mc.currentLayer()
-            
-            mc.setMapTool(self.tool)
-            self.action_spline.setChecked(True)    
-           
-        # get current layer if it is line or polygon, otherwise None
-        def getLayer(self):
-            layer = self.canvas.currentLayer()
-            if layer is None: return None
-            if layer.type() != QgsMapLayer.VectorLayer: return None
-            if not layer.geometryType() in [ QGis.Line, QGis.Polygon ]: return None
-            return layer
- 
-        def enableAction(self):
-            self.action_spline.setEnabled(False)
-            layer = self.getLayer()
-            if layer:
-                self.action_spline.setEnabled( layer.isEditable() )
-                
-        def layerChanged(self):
-            self.tool.deactivate()
-            self.enableAction() 
-            self.disconnectLayer()
-            self.connectLayer( self.getLayer() )
+    def __init__(self, iface,  toolBar):
+        # Save reference to the QGIS interface
+        self.iface = iface
+        self.canvas = self.iface.mapCanvas()
+        self.layer= self.iface.activeLayer()
+        self.mc = self.canvas
+        self.tool = None
         
-        def connectLayer(self, layer):
-            if layer is None: return
-            self.connectedLayer = layer
-            layer.editingStopped.connect(self.enableAction)
-            layer.editingStarted.connect(self.enableAction)
+        # Create actions 
+        self.action_spline = QAction(QIcon(":/plugins/cadtools/icons/spline.png"), QCoreApplication.translate("ctools", "Create Spline Lines/Polygons"),  self.iface.mainWindow())
+        
+        self.action_spline.setCheckable(True) 
 
-        def disconnectLayer(self):
-            if self.connectedLayer is None: return
-            self.connectedLayer.editingStopped.disconnect(self.enableAction)
-            self.connectedLayer.editingStarted.disconnect(self.enableAction)
-            self.connectedLayer = None
+        try:
+            if self.layer.isEditable():
+                self.action_spline.setEnabled(True)
+                self.layer.editingStopped.connect(self.toggle)
+                
+
+        except:
+            pass
             
-        def deactivate(self):
+        else:
+            self.action_spline.setEnabled(False)
+            self.layer.editingStarted.connect(self.toggle)
+            
+        
+        # Connect to signals for button behaviour
+        self.count=0
+        self.count+=1
+        if self.count==1:
+            
+            self.action_spline.triggered.connect(self.digitize)
+            self.count-=1
+            
+
+        if self.count==0:
+            self.canvas.mapToolSet.connect(self.deactivate)
+            self.count+=1
+            
+        # self.iface.currentLayerChanged.connect(self.toggle)
+        
+        
+        # Add actions to the toolbar
+        toolBar.addSeparator()
+        toolBar.addAction(self.action_spline)
+      
+    
+        # Get the tool
+        self.tool = Spline(self.iface)
+        
+     
+    def digitize(self):
+        
+        layer = self.mc.currentLayer()
+        self.action_spline.setChecked(True)
+        if self.action_spline.isChecked():
+            self.mc.setMapTool(self.tool)
+            print 'call'
+            
+            self.count-=1
+        
+               
+    
+    def deactivate(self):
+        if self.count == 0:
             self.action_spline.setChecked(False)
-
-        def settingsChanged(self):
-            self.tool.refresh()
+            self.mc.unsetMapTool(self.tool)
+            print 'tool'
             
+            
+
+        else:
+            self.count=1
+            pass
+
+    def toggle(self):
+        
+        if self.layer:
+           # disconnect all previously connect signals in current layer
+           try:
+               self.layer.editingStarted.disconnect(self.toggle)
+           except:
+               pass
+           try:
+               self.layer.editingStopped.disconnect(self.toggle)
+           except:
+               pass
+           
+           # check if current layer is editable and has selected features
+           # and decide whether the plugin button should be enable or disable
+           if self.layer.isEditable():
+                self.action_spline.setEnabled(True)
+                # self.action_spline.setChecked(True)
+                self.layer.editingStopped.connect(self.toggle)
+           # layer is not editable    
+           else:
+               
+               self.action_spline.setEnabled(False)
+               # self.action_spline.setChecked(False)
+               self.layer.editingStarted.connect(self.toggle)
+               # self.mc.mapToolSet.connect(self.deactivate)
+        else:
+           self.action_spline.setEnabled(False)
+           # self.mc.mapToolSet.connect(self.deactivate)
+           # self.action_spline.setChecked(True)    
+        

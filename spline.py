@@ -1,10 +1,31 @@
+"""
+/***************************************************************************
+    Digitize spline, based on CircularArcDigitizer (Stefan Ziegler)
+    and Generalizer plugin (Piotr Pociask) which is based on GRASS v.generalize
+                              -------------------
+        begin                : February 2014
+        copyright            : (C) 2014 by Radim Blazek
+        email                : radim.blazek@gmail.com
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+"""
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 import math
 
-from utils import *
+#from circulararc import CircularArc
+import utils
+
 
 class Spline(QgsMapTool):
     def __init__(self, iface):
@@ -13,7 +34,6 @@ class Spline(QgsMapTool):
         QgsMapTool.__init__(self,self.canvas)
         self.rb = QgsRubberBand(self.canvas,  QGis.Polygon)
         self.points = [] # digitized, not yet interpolated points
-        self.type = QGis.Polygon # layer geometry type
 
         self.cursor = QCursor(QPixmap(["16 16 3 1",
                                       "      c None",
@@ -37,7 +57,8 @@ class Spline(QgsMapTool):
                                       "    ++.....+    ",
                                       "      ++.++     ",
                                       "       +.+      "]))
-
+                                  
+ 
     def canvasPressEvent(self,event):
         color = QColor(255,0,0,100)
         self.rb.setColor(color)
@@ -55,11 +76,11 @@ class Spline(QgsMapTool):
             
             (retval,result) = snapper.snapToCurrentLayer (startingPoint, QgsSnapper.SnapToVertex)   
             if result <> []:
-                point = QgsPoint( result[0].snappedVertex )
+                point = result[0].snappedVertex
             else:
                 (retval,result) = snapper.snapToBackgroundLayers(startingPoint)
                 if result <> []:
-                    point = QgsPoint( result[0].snappedVertex )
+                    point = result[0].snappedVertex
                 else:
                     point = self.canvas.getCoordinateTransform().toMapCoordinates( event.pos().x(), event.pos().y() );
             
@@ -71,8 +92,6 @@ class Spline(QgsMapTool):
 
         else:
             if len( self.points ) >= 2:
-                # refresh without last point
-                self.refresh()
                 self.createFeature()
 
             self.resetPoints()
@@ -93,7 +112,11 @@ class Spline(QgsMapTool):
         coords = []
         coords = self.interpolate ( self.points )
         
-        if self.canvas.mapRenderer().hasCrsTransformEnabled() and layer.crs() != self.canvas.mapRenderer().destinationCrs():
+        ## On the Fly reprojection.
+        layerEPSG = utils.authidToCrs(layer.crs().authid())
+        projectEPSG = utils.authidToCrs(self.canvas.mapRenderer().destinationCrs().authid())
+        
+        if layerEPSG != projectEPSG:
             coords_tmp = coords[:]
             coords = []
             for point in coords_tmp:
@@ -121,11 +144,8 @@ class Spline(QgsMapTool):
             layer.endEditCommand()
         else:
             dlg = self.iface.getFeatureForm(layer, f)
-            if QGis.QGIS_VERSION_INT >= 20400: 
-                dlg.setIsAddDialog( True ) # new in 2.4, without calling that the dialog is disabled
             if dlg.exec_():
-                if QGis.QGIS_VERSION_INT < 20400: 
-                    layer.addFeature(f)
+                layer.addFeature(f)
                 layer.endEditCommand()
             else:
                 layer.destroyEditCommand()
@@ -142,11 +162,11 @@ class Spline(QgsMapTool):
         ## at last we do not snap.
         (retval,result) = snapper.snapToCurrentLayer (startingPoint,QgsSnapper.SnapToVertex)   
         if result <> []:
-            point = QgsPoint( result[0].snappedVertex )
+            point = result[0].snappedVertex
         else:
             (retval,result) = snapper.snapToBackgroundLayers(startingPoint)
             if result <> []:
-                point = QgsPoint( result[0].snappedVertex )
+                point = result[0].snappedVertex
             else:
                 point = self.canvas.getCoordinateTransform().toMapCoordinates( event.pos().x(), event.pos().y() );
             
@@ -154,18 +174,14 @@ class Spline(QgsMapTool):
         points.append( point )
         points = self.interpolate ( points )
         self.setRubberBandPoints(points )
-
-    def refresh(self):
-        # redraw, called when settings changed
-        if self.points:
-            points = self.interpolate ( self.points )
-            self.setRubberBandPoints(points ) 
     
     def canvasReleaseEvent(self,event):
         pass 
 
+
     def showSettingsWarning(self):
         pass
+
 
     def activate(self):
         ## Set our new cursor.
@@ -189,9 +205,6 @@ class Spline(QgsMapTool):
             self.rb.addPoint( point, update )
 
     def deactivate(self):
-        # On Win7/64 it was failing if QGIS was closed with a layer opened
-        # for editing with "'NoneType' object has no attribute 'Polygon'"
-        # -> test QGis
         if QGis is not None:
             self.rb.reset(QGis.Polygon)
         self.points = []
@@ -211,13 +224,13 @@ class Spline(QgsMapTool):
     # from given points create interpolated spline
     def interpolate(self, points):
         # always read settings to get changed value immediately
-        self.tolerance = float( QSettings().value(SETTINGS_NAME + "/tolerance", DEFAULT_TOLERANCE ))
-        self.tightness = float( QSettings().value(SETTINGS_NAME + "/tightness", DEFAULT_TIGHTNESS ) )
+        settings = QSettings("CatAIS","cadtools")
+        self.tolerance = float( settings.value("spline/tolerance", 1. ) )
+        self.tightness = float( settings.value("spline/tightness", 0.5 ) )
         points = self.hermite( points, self.tolerance, self.tightness )
         return points
 
     # tolerance is maximum threshold for output line interpolation 
-    #gives a 3 point control bezier curve
     def hermite(self, points, tolerance, tightness):
         npoints = len(points)
         if npoints < 3: return list(points) # return copy

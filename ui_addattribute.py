@@ -8,6 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+import csv
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -134,9 +135,16 @@ class Ui_AddAttribute(object):
         self.label_4.setText(_translate("Dialog", "Code", None))
 
     def retranslateUi_1(self, Dialog):
-        self.label_5.setText(_translate("Dialog", "Ward Number", None))
-        self.label_6.setText(_translate("Dialog", "Road ID", None))
-        self.label_7.setText(_translate("Dialog", "Road Name", None))
-        self.label_8.setText(_translate("Dialog", "Locality Name", None))
+        self.labels=[]
+        with open('C:\Users\pw030\.qgis2\python\plugins\QuickDigitize/buildings.csv') as csvfile:
+            readCSV = csv.reader(csvfile, delimiter=',')
+            for row in readCSV:
+                print(row[0])
+                a=row[0]
+                self.labels.append(a)
+        self.label_5.setText(_translate("Dialog", self.labels[4], None))
+        self.label_6.setText(_translate("Dialog", self.labels[5], None))
+        self.label_7.setText(_translate("Dialog", self.labels[6], None))
+        self.label_8.setText(_translate("Dialog", self.labels[7], None))
         
 
