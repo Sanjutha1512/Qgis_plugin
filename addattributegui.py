@@ -24,7 +24,8 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
 
     inputsignal = pyqtSignal()
     unsetTool = pyqtSignal()
-  
+    global count
+    count = 0
     def __init__(self, parent, flags):
         QDialog.__init__(self, parent, flags)
         
@@ -39,12 +40,18 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
         self.var2 = None
         self.var3 = None
         self.var4 = None
+        self.a=0
+        self.b=0
+        self.c=0
+        self.d=0
+        self.e=0
 
         self.attribute_list=[]
         self.subclass_items=[]
         self.cancelButton.clicked.connect(self.close_1) 
+        self.cancelButton.clicked.connect(self.deletion)
         self.okButton.clicked.connect(self.append_1)
-
+        self.okButton.clicked.connect(self.deletion)
 
     @pyqtSlot(str)    
     def assign_value_1(self, text):
@@ -52,26 +59,45 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
         if text == "Polygon":
             self.comboBox_3.clear()
             self.comboBox_3.addItems(['','Residential'])
+            self.c+=1
+            print "assign_value_1 %d" %self.c
         pass
             
 
     @pyqtSlot(str)    
     def assign_value_2(self, text):
         if text == "Residential":
+            try:
+                self.setupUi_1(self)
+                self.a+=1
+                print "assign_value_2 setupUi_1 %d" %self.a
+            except:
+                pass
+            count = 1
             self.code_1='06-0'
             self.lineEdit.setText(self.code_1)
             self.comboBox_2.clear()
             self.subclass_items = ['', 'House', 'Group of houses', 'Apartments']
             self.comboBox_2.addItems(self.subclass_items)
-            self.setupUi_1(self)
+
+        else:
+            self.delUi_1(self)
+            self.a-=1
+            print "deletion   %d" %self.a
+            self.comboBox_2.clear()
+        self.d+=1
+        print "assign_value_2 %d" %self.d
+
 
     @pyqtSlot(str)   
     def assign_value_3(self):
 
         for n in range(0,4):
             if self.comboBox_2.currentIndex() == n:
-                var= str(n)
+                var= str(n+3)
                 self.lineEdit.setText(self.code_1 + var)
+        self.e+=1
+        print "assign_value_3 %d" %self.e
 
     @pyqtSlot(str)
     def add_attribute_1(self, string):
@@ -80,6 +106,11 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
     @pyqtSlot(str)
     def add_attribute_2(self, string):
         self.var2 =str(self.comboBox_2.currentText())
+        if self.var2 == '' and count == 1:
+            self.lineEdit.clear()
+            self.delUi_1(self)
+            self.a-=1
+            print "deletion   %d" %self.a
     
     @pyqtSlot(str)
     def add_attribute_3(self, string):
@@ -101,17 +132,19 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
 
 
     def accept(self):
-        print "accept"
+        self.b+=1
+        print "accept %d" %self.b
+        
+        if self.b == 1:
+            self.comboBox.activated[str].connect(self.assign_value_1)
+            self.comboBox_3.activated[str].connect(self.assign_value_2)
+            self.comboBox_2.activated[str].connect(self.assign_value_3)
+
+            self.comboBox_2.currentIndexChanged.connect(self.add_attribute_2)
+            self.comboBox.currentIndexChanged.connect(self.add_attribute_1)
+            self.comboBox_3.currentIndexChanged.connect(self.add_attribute_3)
+
     
-        self.comboBox.activated[str].connect(self.assign_value_1)
-        self.comboBox_3.activated[str].connect(self.assign_value_2)
-        self.comboBox_2.activated[str].connect(self.assign_value_3)
-
-        self.comboBox_2.currentIndexChanged.connect(self.add_attribute_2)
-        self.comboBox.currentIndexChanged.connect(self.add_attribute_1)
-        self.comboBox_3.currentIndexChanged.connect(self.add_attribute_3)
-
-        pass
 
     def append_1(self):
         
@@ -120,7 +153,7 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
         self.attribute_list.append(self.var1)
         self.attribute_list.append(self.var3)
         self.attribute_list.append(self.var4)
-        self.delUi_1(self)
+          
         print self.attribute_list
         pass
 
@@ -128,6 +161,16 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
     def close_1(self):
         self.unsetTool.emit()
 
-    
+    @pyqtSlot(str)
+    def creation(self):
+        self.setupUi_1(self)
+        self.a+=1
+        print "Creation %d" %self.a
+
+    @pyqtSlot(str)
+    def deletion(self):
+        self.delUi_1(self)
+        self.a-=1
+        print "deletion   %d" %self.a
         
 
