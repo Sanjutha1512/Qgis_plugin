@@ -37,6 +37,9 @@ from addattributetool import AddAttributeTool
 from createpointlayertool import CreatePointLayerTool
 from createlinelayertool import CreateLineLayerTool
 from createpolygonlayertool import CreatePolygonLayerTool
+from splinetool import SplineTool
+from settingsdialog import SettingsDialog
+
 import os.path, sys
 currentPath = os.path.dirname( __file__ )
 
@@ -94,6 +97,7 @@ class QuickDigitize:
         self.createpointlayer= CreatePointLayerTool(self.iface, self.toolbar)
         self.createlinelayer= CreateLineLayerTool(self.iface, self.toolbar)
         self.createpolygonlayer= CreatePolygonLayerTool(self.iface, self.toolbar)
+        self.spline= SplineTool(self.iface, self.toolbar)
 
         toolbars = iface.mainWindow().findChildren(QToolBar)
         for self.toolbar in toolbars:
@@ -206,6 +210,13 @@ class QuickDigitize:
             text=self.tr(u'Quick Digitize'),
             callback=self.run,
             parent=self.iface.mainWindow())
+        self.settingsAction = QAction( QCoreApplication.translate("Spline", "Settings" ), self.iface.mainWindow() )
+        self.settingsAction.setObjectName("splineAction")
+        self.settingsAction.triggered.connect(self.openSettings)
+
+        self.iface.addPluginToVectorMenu(u"Digitize Spline", self.settingsAction)
+
+        self.settingsAction.triggered.connect(self.openSettings)
 
 
     def unload(self):
@@ -219,6 +230,14 @@ class QuickDigitize:
 
         # remove the toolbar
         del self.toolbar
+
+    def openSettings(self):
+        # button signals in SettingsDialog were not working on Win7/64
+        # if SettingsDialog was created with iface.mainWindow() as parent
+        #self.settingsDialog = SettingsDialog(self.iface.mainWindow())
+        self.settingsDialog = SettingsDialog()
+        self.settingsDialog.changed.connect( self.spline.settingsChanged )
+        self.settingsDialog.show()
 
     def select_output_file(self):
 	    filename = QFileDialog.getSaveFileName(self.dlg, "Select output file ","", '*.*')

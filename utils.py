@@ -7,6 +7,10 @@ from qgis.gui import *
 import math
 import re
 
+SETTINGS_NAME = "SplinePlugin"
+
+DEFAULT_TOLERANCE = 1.0
+DEFAULT_TIGHTNESS = 0.5
 
 
 def addGeometryToLayer(g,iface):

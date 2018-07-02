@@ -26,10 +26,14 @@ class RotateObjectTool:
         self.act_rotateobject = QAction(QIcon(":/plugins/cadtools/icons/rotatefeature.png"), QCoreApplication.translate("ctools", "Rotate Object"),  self.iface.mainWindow())
         self.act_selectvertexandobject= QAction(QIcon(":/plugins/cadtools/icons/selectvertexandfeature.png"), QCoreApplication.translate("ctools", "Select Vertex and Object"),  self.iface.mainWindow())
         self.act_selectvertexandobject.setCheckable(True)     
-        if self.layer.isEditable():
-            self.act_rotateobject.setEnabled(True)
-            self.act_selectvertexandobject.setEnabled(True)
-            self.layer.editingStopped.connect(self.toggle_1)
+        try:
+                if self.layer.isEditable():
+                    self.act_rotateobject.setEnabled(True)
+                    self.act_selectvertexandobject.setEnabled(True)
+                    self.layer.editingStopped.connect(self.toggle_1)
+        except:
+            pass
+            
         else:
             self.act_rotateobject.setEnabled(False)
             self.act_selectvertexandobject.setEnabled(False)
