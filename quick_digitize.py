@@ -38,6 +38,7 @@ from createpointlayertool import CreatePointLayerTool
 from createlinelayertool import CreateLineLayerTool
 from createpolygonlayertool import CreatePolygonLayerTool
 from splinetool import SplineTool
+from rectovaldigittool import RectOvalDigit
 from settingsdialog import SettingsDialog
 
 import os.path, sys
@@ -59,6 +60,7 @@ class QuickDigitize:
         self.canvas = self.iface.mapCanvas()
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
+        self.captureMode= 2
         # initialize locale
         # locale = QSettings().value('locale/userLocale')[0:2]
         # locale_path = os.path.join(
@@ -98,6 +100,7 @@ class QuickDigitize:
         self.createlinelayer= CreateLineLayerTool(self.iface, self.toolbar)
         self.createpolygonlayer= CreatePolygonLayerTool(self.iface, self.toolbar)
         self.spline= SplineTool(self.iface, self.toolbar)
+        self.rectangle=RectOvalDigit(self.iface,self.toolbar)
 
         toolbars = iface.mainWindow().findChildren(QToolBar)
         for self.toolbar in toolbars:
