@@ -125,6 +125,7 @@ class Ui_AddAttribute(object):
             self.lineEdit_4.deleteLater()
             self.label_8.deleteLater()
             self.lineEdit_5.deleteLater()
+            return 1
 
 
     def retranslateUi(self, Dialog):
@@ -136,15 +137,13 @@ class Ui_AddAttribute(object):
 
     def retranslateUi_1(self, Dialog):
         self.labels=[]
-        with open('C:\Users\pw030\.qgis2\python\plugins\QuickDigitize/buildings.csv') as csvfile:
+        with open('C:\Users\Sanjutha Indrajit\.qgis2\python\plugins\QuickDigitize\data_files/buildings.csv') as csvfile:
             readCSV = csv.reader(csvfile, delimiter=',')
             for row in readCSV:
-                print(row[0])
+                # print(row[0])
                 a=row[0]
                 self.labels.append(a)
         self.label_5.setText(_translate("Dialog", self.labels[4], None))
         self.label_6.setText(_translate("Dialog", self.labels[5], None))
         self.label_7.setText(_translate("Dialog", self.labels[6], None))
         self.label_8.setText(_translate("Dialog", self.labels[7], None))
-        
-

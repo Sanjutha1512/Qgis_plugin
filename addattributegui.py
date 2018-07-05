@@ -3,7 +3,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
 from ui_addattribute import Ui_AddAttribute
-import os, sys
+import os, sys, csv
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -25,7 +25,8 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
     inputsignal = pyqtSignal()
     unsetTool = pyqtSignal()
     global count
-    count = 0
+    count =0
+    
     def __init__(self, parent, flags):
         QDialog.__init__(self, parent, flags)
         
@@ -40,6 +41,7 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
         self.var2 = None
         self.var3 = None
         self.var4 = None
+        self.flag = 0
         self.a=0
         self.b=0
         self.c=0
@@ -48,6 +50,8 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
 
         self.attribute_list=[]
         self.subclass_items=[]
+        self.code_1=[]
+
         self.cancelButton.clicked.connect(self.close_1) 
         self.cancelButton.clicked.connect(self.deletion)
         self.okButton.clicked.connect(self.append_1)
@@ -58,46 +62,97 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
         
         if text == "Polygon":
             self.comboBox_3.clear()
-            self.comboBox_3.addItems(['','Residential'])
+            self.classes=[]
+            with open('C:\Users\Sanjutha Indrajit\.qgis2\python\plugins\QuickDigitize/buildings_class_subclass.csv') as csvfile:
+                readCSV = csv.reader(csvfile, delimiter=';')
+                for row in readCSV:
+                    print(row[0])
+                    a=row[0]
+                    self.classes.append(a)
+                    self.classes[0] = ''
+            self.comboBox_3.addItems(self.classes)
             self.c+=1
-            print "assign_value_1 %d" %self.c
+            # print "assign_value_1 %d" %self.c
         pass
             
 
     @pyqtSlot(str)    
     def assign_value_2(self, text):
-        if text == "Residential":
-            try:
-                self.setupUi_1(self)
-                self.a+=1
-                print "assign_value_2 setupUi_1 %d" %self.a
-            except:
-                pass
-            count = 1
-            self.code_1='06-0'
-            self.lineEdit.setText(self.code_1)
-            self.comboBox_2.clear()
-            self.subclass_items = ['', 'House', 'Group of houses', 'Apartments']
-            self.comboBox_2.addItems(self.subclass_items)
 
-        else:
-            self.delUi_1(self)
+        if self.count>0 and self.flag == 0:
+            self.flag=self.delUi_1(self)
+
+        self.subclass=[]
+        self.code=[]
+        self.subclass_items=[]
+        self.code_1=[]
+        self.comboBox_2.clear()
+
+        with open('C:\Users\Sanjutha Indrajit\.qgis2\python\plugins\QuickDigitize/buildings_class_subclass.csv') as csvfile:
+            readCSV = csv.reader(csvfile, delimiter=';')
+            for row in readCSV:
+
+                print(row[2])
+                a=row[1]
+                b=row[2]
+                
+                self.subclass.append(a)
+                self.code.append(b)
+                self.subclass[0] = ''
+                self.code[0]= ''
+
+        for n in range(1,len(self.classes)):            
+            if text == self.classes[n]:
+                # try:
+                self.setupUi_1(self)
+                # self.a+=1
+                # print "assign_value_2 setupUi_1 %d" %n
+                # except:
+                #     pass
+                self.count = n
+                #self.count+=1
+                count=1
+                
+                for c in self.subclass[n].split(","):
+                    self.subclass_items.append(c)
+
+                self.comboBox_2.addItems(self.subclass_items)
+
+                for g in self.code[n].split(","):
+                    self.code_1.append(g)
+
+            else:
+                if self.count==1 or self.count==0:
+
+                    pass
+                else:
+                    self.flag=self.delUi_1(self)
+                    self.a-=1
+                    print "deletion   %d" %self.a
+                    self.comboBox_2.clear()
+                    self.d+=1
+                    # print "assign_value_2 %d" %self.d
+                    
+                    self.count-=1
+
+
+        if n == (len(self.classes)+1) and self.flag ==0 :    
+            self.flag=self.delUi_1(self)
+            self.count=0
             self.a-=1
             print "deletion   %d" %self.a
             self.comboBox_2.clear()
-        self.d+=1
-        print "assign_value_2 %d" %self.d
-
+            self.d+=1
+            print "assign_value_2 %d" %self.d
 
     @pyqtSlot(str)   
     def assign_value_3(self):
 
-        for n in range(0,4):
+        for n in range(0,len(self.subclass_items)):
             if self.comboBox_2.currentIndex() == n:
-                var= str(n+3)
-                self.lineEdit.setText(self.code_1 + var)
+                self.lineEdit.setText(self.code_1[n])
         self.e+=1
-        print "assign_value_3 %d" %self.e
+        # print "assign_value_3 %d" %self.e
 
     @pyqtSlot(str)
     def add_attribute_1(self, string):
@@ -105,16 +160,16 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
         
     @pyqtSlot(str)
     def add_attribute_2(self, string):
-        self.var2 =str(self.comboBox_2.currentText())
+        self.var2 =str(self.comboBox_3.currentText())
         if self.var2 == '' and count == 1:
-            self.lineEdit.clear()
+            
             self.delUi_1(self)
             self.a-=1
             print "deletion   %d" %self.a
     
     @pyqtSlot(str)
     def add_attribute_3(self, string):
-        self.var3 =str(self.comboBox_3.currentText())
+        self.var3 =str(self.comboBox_2.currentText())
 
     @pyqtSlot(str)
     def add_attribute_4(self, string):
@@ -127,22 +182,23 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
         self.comboBox_3.clear()
         self.comboBox.addItems(['','Line', 'Point', 'Polygon'])
         self.lineEdit.clear()
-
+        self.count = 0
+        self.flag = 0 
         pass
 
 
     def accept(self):
         self.b+=1
-        print "accept %d" %self.b
-        
+        # print "accept %d" %self.b
+        self.flag =0
         if self.b == 1:
             self.comboBox.activated[str].connect(self.assign_value_1)
             self.comboBox_3.activated[str].connect(self.assign_value_2)
             self.comboBox_2.activated[str].connect(self.assign_value_3)
 
-            self.comboBox_2.currentIndexChanged.connect(self.add_attribute_2)
+            self.comboBox_3.currentIndexChanged.connect(self.add_attribute_2)
             self.comboBox.currentIndexChanged.connect(self.add_attribute_1)
-            self.comboBox_3.currentIndexChanged.connect(self.add_attribute_3)
+            self.comboBox_2.currentIndexChanged.connect(self.add_attribute_3)
 
     
 
@@ -165,7 +221,7 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
     def creation(self):
         self.setupUi_1(self)
         self.a+=1
-        print "Creation %d" %self.a
+        # print "Creation %d" %self.a
 
     @pyqtSlot(str)
     def deletion(self):
