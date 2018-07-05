@@ -9,7 +9,6 @@ import sys
 
 ## Import own classes and tools.
 from addattributegui import AddAttributeGui
-from dialog_1 import Main_1
 import utils
 
 class AddAttributeTool:

@@ -1,4 +1,3 @@
-
 # -*- coding: latin1 -*-
 # from PyQt4.QtCore import *
 # import sip
@@ -100,13 +99,10 @@ class AddFieldsTool:
         for n in range(1,len(self.fields)):
             self.qgsfields=self.fields[n]
             # self.qgsfields_1=self.field_type[n]
-            self.layer.dataProvider().addAttributes([QgsField((' '+str(self.qgsfields)),self.field_type)])
+            self.layer.dataProvider().addAttributes([QgsField(self.qgsfields, QVariant.String)])
         # self.layer.dataProvider().addAttributes([QgsField('asdssa',QVariant.Double)])
         self.layer.updateFields()
 
 
     def close_func(self):
         self.ctrl.close()
-
-    
-    
