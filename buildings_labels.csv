@@ -1,13 +1,13 @@
-﻿Attribute name,Attribute field name,Attribute field type,Attribute field width
-Code,Code,alphanumeric,10
-Class,Class,text,25
-Sub-Class,Sub_Class,text,50
-Ward Number,Ward_No,alphanumeric,10
-Road ID,Rd_ID,alphanumeric,15
-Road Name,Rd_Name,text,30
-Locality Name,Locality,text,50
-Colony Name,Colony,text,50
-Number of floors,No_floors,numeric,5
-Construction Type,Cons_type,text,15
-Area in sq. mt.,Area,double,10
-Description,Descr,text,50
+Attribute name,Attribute field name,Attribute field type,Attribute field width
+Code,Code,QVariant.String,10
+Class,Class,QVariant.String,25
+Sub-Class,Sub_Class,QVariant.String,50
+Ward Number,Ward_No,QVariant.String,10
+Road ID,Rd_ID,QVariant.String,15
+Road Name,Rd_Name,QVariant.String,30
+Locality Name,Locality,QVariant.String,50
+Colony Name,Colony,QVariant.String,50
+Number of floors,No_floors,Qvariant.Int,5
+Construction Type,Cons_type,QVariant.String,15
+Area in sq. mt.,Area,Qvariant.Double,10
+Description,Descr,QVariant.String,50

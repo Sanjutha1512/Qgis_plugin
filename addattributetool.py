@@ -21,7 +21,7 @@ class AddAttributeTool:
         self.ctrl = AddAttributeGui(self.iface.mainWindow(),  flags)
         self.attribute = self.ctrl.attribute_list
         # self.ctrl_1 = Main_1()
-        self.act_addattribute = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
+        self.act_addattribute = QAction(QIcon(":/plugins/QuickDigitize/addattribute.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
         # self.act_dialog = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Add Attributes"),  self.iface.mainWindow())
         try:
                 if self.layer.isEditable():

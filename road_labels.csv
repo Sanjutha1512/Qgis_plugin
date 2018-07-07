@@ -1,0 +1,14 @@
+AttributeName,Attribute Field Name,Attribute Field Type,AttributeField Width,Description/Value
+Road Id,Rd_ID,Alphanumeric,15,Unique Id
+Code,Code,Alphanumeric,10,Code as given in Table 6
+Sub-Class,Sub_Class,Text,20,Sub Class as given in Table 6
+Length in km.,Length_km.,Double 10 Up to 4 decimals Length (in km.)
+Ward Number,Ward_No,Alphanumeric,10,Ward Number
+Road Name,Rd_Name,Text,30,Specific Name of the featureif any
+Road Construction Material,Cons_Mat,Text,10,Concrete/Asphalt/WBM/Any
+Other CarriageWidth (in mt.),CW_Width,Double,10 Up to 4decimals Carriage Width in metres
+Right of Way Width (in mt.),ROW_Width Double,10 decimals Up to 4 Right of Way Width in metres
+Maintained By,Maintain,Text,15 Municipal body/NHAI/R & B Dept./Other
+Foot Path,FP,Text,3,Yes/No
+Foot path width (in mt.in case Yes),FP_Width,Double,10 Up to 2 decimals,Footpath Width in metres
+Foot Path Construction material,FP_Cons_Ma Text,15,Shabad/Tiles/Concrete/Other Stone

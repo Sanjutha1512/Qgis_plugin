@@ -18,14 +18,14 @@ class CreatePolygonLayerTool:
         self.dlg = CreatePolygonLayerGui(self.iface.mainWindow(),  flags)
         #self.attribute =[]
         
-        self.act_createlinelayer = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Create Polygon Layer"),  self.iface.mainWindow())
+        self.act_createlinelayer = QAction(QIcon(":/plugins/QuickDigitize/add_polygon_layer.svg"), QCoreApplication.translate("ctools", "Create Polygon Layer"),  self.iface.mainWindow())
                      
         self.act_createlinelayer.triggered.connect(self.showDialog)
         
 
         toolBar.addSeparator()
         toolBar.addAction(self.act_createlinelayer)
-
+        
 
     def showDialog(self):
    

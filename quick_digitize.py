@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QFileInfo, QSize
+from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QFileInfo, QSize, QVariant
 from PyQt4.QtGui import QAction, QIcon, QFileDialog, QToolBar
 from qgis.core import *
 from qgis.gui import *
@@ -34,6 +34,8 @@ from vertexfindertool import VertexFinderTool
 from rotateobjecttool import RotateObjectTool
 from showazimuthtool import ShowAzimuthTool
 from addattributetool import AddAttributeTool
+from addfieldstool import AddFieldsTool
+from addstyletool import AddStyleTool
 from createpointlayertool import CreatePointLayerTool
 from createlinelayertool import CreateLineLayerTool
 from createpolygonlayertool import CreatePolygonLayerTool
@@ -60,7 +62,7 @@ class QuickDigitize:
         self.canvas = self.iface.mapCanvas()
         # initialize plugin directory
         self.plugin_dir = os.path.dirname(__file__)
-        self.captureMode= 2
+        
         # initialize locale
         # locale = QSettings().value('locale/userLocale')[0:2]
         # locale_path = os.path.join(
@@ -96,15 +98,18 @@ class QuickDigitize:
         self.showazimuth = ShowAzimuthTool(self.iface,  self.toolbar)
         self.rotateobject = RotateObjectTool(self.iface,  self.toolbar)
         self.addattribute = AddAttributeTool(self.iface, self.toolbar)
+        self.addfields = AddFieldsTool(self.iface, self.toolbar)
+        self.addstyle = AddStyleTool(self.iface, self.toolbar)
         self.createpointlayer= CreatePointLayerTool(self.iface, self.toolbar)
         self.createlinelayer= CreateLineLayerTool(self.iface, self.toolbar)
         self.createpolygonlayer= CreatePolygonLayerTool(self.iface, self.toolbar)
         self.spline= SplineTool(self.iface, self.toolbar)
         self.rectangle=RectOvalDigit(self.iface,self.toolbar)
 
+
         toolbars = iface.mainWindow().findChildren(QToolBar)
         for self.toolbar in toolbars:
-    		self.toolbar.setIconSize(QSize(32,48))
+    		self.toolbar.setIconSize(QSize(48,48))
 
         self.dlg.lineEdit.clear()
         self.dlg.pushButton.clicked.connect(self.select_output_file)
