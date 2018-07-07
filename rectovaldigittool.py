@@ -58,7 +58,7 @@ class RectOvalDigit:
         # Add button
         # Add actions
         # self.rectbyextent = QAction(QIcon(":/plugins/rectovalDigit/icons/rectbyextent.png"),  "Rectangle by extent",  self.iface.mainWindow())
-        self.rectbyextent = QAction(QIcon(":/plugins/rectovalDigit/icons/rectbyextent.png"), QCoreApplication.translate("ctools", "Rectangle by extent"),  self.iface.mainWindow())
+        self.rectbyextent = QAction(QIcon(":/plugins/QuickDigitize/rectByExtent.svg"), QCoreApplication.translate("ctools", "Rectangle by extent"),  self.iface.mainWindow())
 
         self.rectbyextent.setCheckable(True)
         # self.rectbyextent.setEnabled(False)

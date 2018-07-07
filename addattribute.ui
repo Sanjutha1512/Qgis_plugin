@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>595</width>
-    <height>455</height>
+    <width>676</width>
+    <height>710</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add Road Attributes</string>
+   <string>Add Attributes</string>
   </property>
   <property name="modal">
    <bool>false</bool>
@@ -19,10 +19,10 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>410</y>
-     <width>341</width>
-     <height>32</height>
+     <x>440</x>
+     <y>670</y>
+     <width>193</width>
+     <height>28</height>
     </rect>
    </property>
    <property name="orientation">
@@ -214,6 +214,127 @@
      <width>301</width>
      <height>22</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>400</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Colony Name</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_6">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>400</y>
+     <width>301</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_7">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>440</y>
+     <width>111</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>440</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>No. of Floors</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_8">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>480</y>
+     <width>301</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>480</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Construction Type</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_12">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>520</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Area in sq. mt.</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_9">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>520</y>
+     <width>161</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_13">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>560</y>
+     <width>101</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Description</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_10">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>560</y>
+     <width>461</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

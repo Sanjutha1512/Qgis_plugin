@@ -18,14 +18,14 @@ class CreatePointLayerTool:
         self.dlg = CreateLayerGui(self.iface.mainWindow(),  flags)
         #self.attribute =[]
         
-        self.act_createpointlayer = QAction(QIcon(":/plugins/QuickDigitize/icon.png"), QCoreApplication.translate("ctools", "Create Point Layer"),  self.iface.mainWindow())
+        self.act_createpointlayer = QAction(QIcon(":/plugins/QuickDigitize/add_point_layer.svg"), QCoreApplication.translate("ctools", "Create Point Layer"),  self.iface.mainWindow())
                      
         self.act_createpointlayer.triggered.connect(self.showDialog)
         
 
         toolBar.addSeparator()
         toolBar.addAction(self.act_createpointlayer)
-
+        
 
     def showDialog(self):
    

@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/plugins/QuickDigitize" >
         <file>icon.png</file>
+		<file>add_point_layer.svg</file>
+		<file>add_line_layer.svg</file>
+		<file>add_polygon_layer.svg</file>
+		<file>rectByExtent.svg</file>
     </qresource>
 </RCC>

@@ -1,0 +1,34 @@
+Geo-Spatail Data;Geomerty;Class;Subclass;Code													
+URBAN LAND USE/LAND COVER;Polygon;Residential;House,Group of Houses,Apartment;06-04,06-05,06-06									
+URBAN LAND USE/LAND COVER;Polygon;Commercial;Retail,Wholesale	General Business,Hotel/Lodge/Restaurant,Shopping Centre/ Mall,Multiplex/Cinema,Function Hall/ Marriage Garden,Warehouse,Storage Godown,Resort,Petrol Pump/LPG filling station,Informal shop,Hostel,Market(Daily/Weekly)/ Mandi;07-01,07-02,07-03,07-04,07-05,07-06,07-07,07-08,07-09,07-10,07-11,07-12,07-13,07-14
+URBAN LAND USE/LAND COVER;Polygon;Industrial;Manufacturing,Service,Chemical,Pharmaceutical,Textile,IT Parks,Industrial Estate/ SEZ,Agro based & Food Processing,Obnoxious,Cottage and Household,Other Industries;08-01,08-02,08-03,08-04,08-05,08-06,08-07,08-08,08-09,08-10,08-11
+URBAN LAND USE/LAND COVER;Polygon;Mixed;Residential& Commercial,Residential & Household Industry, Residential & Educational,Residential&Health Services,Commercial& Industrial, Commercial & Health Services,Commercial & Educational,Commercial & Recreational,Residential & Commercial & Institutional;09-01,09-02,09-03,09-04,09-05,09-06,09-07,09-08,09-09
+URBAN LAND USE/LAND COVER;Polygon;Educational;School,College,University,Vocational Institute,Anganwari,Training Institute;10-01,10-02,10-03,10-04,10-05,10-06
+URBAN LAND USE/LAND COVER;Polygon;Health Services;Govt. Hospital, Private Hospital,Diagnostic Centre,Clinic/Dispensary,Nursing Home,Primary/Community Health Centre;11-01,11-02,11-03,11-04,11-05,11-06
+URBAN LAND USE/LAND COVER;Polygon;Central Govt. Property;Office,Quarter;12-01,12-02
+URBAN LAND USE/LAND COVER;Polygon;State Govt. Property;Office,Quarter;13-01,13-02
+URBAN LAND USE/LAND COVER;Polygon;Railway;Railway Property;14-01
+URBAN LAND USE/LAND COVER;Polygon;Public & Semi-Public;Private Office,Banks,Credit Society,Foreign Establishment,Police Station,Cantonment/Battalion,Jail,Crematorium Burial Ground/Grave Yard,Guesthouse,Community Hall,Dharmashala,Tourist Facility Center,Auditorium,Convention Centre,Museum,Public Library,Art Gallery & Cultural Centre,LPG/CNG Gas Booking Centre,Ticket Booking & Reservation Office,Stock Exchange,Disaster Management Centre,Metrological Station,Dhobi Ghat,Crech/Day Care,Public/Community Toilet,Social Welfare Centre,Orphanage,Old Age Home,Night Shelter,Fire Station,ATM;15-01,15-02,15-03,15-04,15-05,15-06,15-07,15-08,15-09,15-10,15-11,15-12,15-13,15-14,15-15,15-16,15-17,15-18,15-19,15-20,15-21,15-22,15-23-,15-24,15-25,15-26,15-27,15-28,15-29,15-30,15-31
+URBAN LAND USE/LAND COVER;Polygon;Religious;Temple,Mosque,Idgah,Church,Gurudwara,Monastery,Synagogue,Chhatri;16-01,16-02,16-03,16-04,16-05,16-06,16-07,16-08
+URBAN LAND USE/LAND COVER;Polygon;Recreational;Garden,Park,Play Ground,Club,Sports Centre,Gymnasium,Swimming Pool,Stadium,Planetarium,Aquarium,Open Air Theatre,Golf Course,Race Course,Exhibition Ground,Amusement/ Theme Park;17-01,17-02,17-03,17-04,17-05,17-06,17-07,17-08,17-09,17-10,17-11,17-12,17-13,17-14,17-15
+URBAN LAND USE/LAND COVER;Polygon;Public Utilities;Water Treatement Plant,Water Pumping Station,Ground Level Reservoir,Sewage Treatement Plant,Sweage Pumping Station,Electric Power Plant,Electric Sub-Station,City Gate Metering Stations,Area Regulator Stations,Rain Water Harvesting System,Effluent Treatement Plant;18-01-01,18-01-02,18-01-03,18-03-01,18-03-02,18-04-01,18-04-02,18-05-01,18-05-02,18-06,18-07
+URBAN LAND USE/LAND COVER;Polygon;Solid Waste Management; Land Fill Site,Dumping Yard,Recycling Plant,Garbage Collection Point/Dumper;19-01,19-02,19-03,19-04
+URBAN LAND USE/LAND COVER;Polygon;Communication;Telephone exchange,Post/Telegraph Office,Radio/TV Station,Satellite & Telecommunication Centre,Public Telephone Booth,Cell Tower,WiFi Hotspot;20-01,20-02,20-03,20-04,20-05,20-06,20-07
+URBAN LAND USE/LAND COVER;Polygon;Heritage;Monument,Fort,Arrchaeological Site;21-01,21-02,21-03
+URBAN LAND USE/LAND COVER;Polygon;Slum;Notified Slum,Non-notefied Slum,Squatter / Kachibasti;22-01,22-02,22-03
+URBAN LAND USE/LAND COVER;Polygon;Vacant Land;Private Vacant,Muncipal Vacant,Government Vacant,Reclaimed Land,Layout / Plotted;23-01,23-02,23-03,23-04,23-05
+URBAN LAND USE/LAND COVER;Polygon;Transportation;Bus stand/Terminus,Railway Station,Railway Yard / Siding,Railway Track Area,Airport / Airstrip,Helipad,Port,Harbour,Jetty,Truck Terminus,Freight Complex,Taxi Stand,Auto Stand,Cycle rickshaw/Cycle/Cart stand,Bus Bay,Bus Stop,Transport Nagar;24-01,24-02,24-03,24-04,24-05,24-06,24-07,24-08,24-09,24-10,24-11,24-12,24-13,24-14,24-15,24-16,24-17
+URBAN LAND USE/LAND COVER;Polygon;Traffic related;Traffic Island,Median / Divider,Parking Space / Area;25-01,25-02,25-03
+URBAN LAND USE/LAND COVER;Polygon;Rural;Village / Abadi Area;26-01
+URBAN LAND USE/LAND COVER;Polygon;Green Areas;Reserved Forest,Protected Forest / Notifies Forest,Social,Green belt,Tree Clad Area,Tree;27-01,27-02,27-03,27-04,27-05 
+URBAN LAND USE/LAND COVER;Polygon;Agricultural Land;Cropland,Fallow Land,Plantations,Orchard,Horticulture,Plant nursery;28-01,28-02,28-03,28-04,28-05,28-06
+URBAN LAND USE/LAND COVER;Polygon;Wetlands;Waterlogged,Low lying area,Marshy,Swampy,Mudflat,Creek;29-01,29-02,29-03,29-04,29-05,29-06
+URBAN LAND USE/LAND COVER;Polygon;Wastelands;Scrubland,Barren,Rocky,Sandy area,Salt affected,Gullied;30-01,30-02,30-03,30-04,30-05,30-06
+URBAN LAND USE/LAND COVER;Polygon;Specific Land Use;Hill/Mountain,Snow Covered Area,Mining Area,Grazing Area,Pastures,Meadows,Tea/Coffee Garden,Ghats,Coral Reef,Sand Dunes;31-01,31-02,31-03,31-04,31-05,35-06,35-07,35-08,35-09,31-10
+URBAN LAND USE/LAND COVER;Polygon;Eco-Sensitive Areas;Bird Sanctuary,Bio-diversity Park,Botanical Garden,Zoo,National Park,Mangrove,Oxbow Lakes,Paleo channels;32-01,32-02,32-03,32-04,32-05,32-06,32-07,32-08
+URBAN LAND USE/LAND COVER;Polygon;Others;Salt pan,Aquaculture,Brick kiln,Quarry,Dam,Barrage,Aqueduct,Weir,Farm House,Dairy farm,Poultry farm,Nursery,Slaughter House,Dairy Booth,Lighthouse,Beach;33-01,33-02,33-03,33-04,33-05,33-06,33-07,33-08,33-09,33-10,33-11,33-12,33-13,33-14,33-15,33-16
+Rail;Line;Rail;Broad Guage,Narrow Guage,Meter Gauge,Metro/MRTS,MMTS;02-01,02-02,02-03,02-04,02-05
+Bridges/Flyovers;Line;Bridges;Culvert,Tunnel,Bridge across river,Over Bridge,Under Pass,Road Bridge across Rail,Subway,Foot over bridge,Rope bridge;03-01,03-02,03-03,03-04,03-05,03-06,03-07,03-08,03-09
+Bridges/Flyovers;Line;Flyovers;Flyovers;04-01
+Water bodies;Line;Stream,Canal,Drain;05-02,05-03,05-04
+Water bodies;Polygon;River,Stream,Canal,Drain,Ponds,Lake,Island(River/Lake),Reservoir,Back Water,Sea;05-01,05-02,05-03,05-04,05-06,05-07,05-08,05-09,05-10,05-11
