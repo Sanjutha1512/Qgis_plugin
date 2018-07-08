@@ -43,26 +43,26 @@ class RectByExtentTool(QgsMapTool):
                                   
  
     def canvasPressEvent(self,event):
-		layer = self.canvas.currentLayer()
-		color = QColor(255,0,0)
-		self.rb = QgsRubberBand(self.canvas, True)
-		self.rb.setColor(color)
-		self.rb.setWidth(1)
+  		layer = self.canvas.currentLayer()
+  		color = QColor(255,0,0)
+  		self.rb = QgsRubberBand(self.canvas, True)
+  		self.rb.setColor(color)
+  		self.rb.setWidth(1)
 
-    #First screen click coordinates
-		x = event.pos().x()
-		y = event.pos().y()
+      #First screen click coordinates
+  		x = event.pos().x()
+  		y = event.pos().y()
 
-    #transformation from screen coordinates to layer's coordinates
-		point = self.toLayerCoordinates(layer,event.pos())	
+      #transformation from screen coordinates to layer's coordinates
+  		point = self.toLayerCoordinates(layer,event.pos())	
 
-    #transformation from layer coordinates to map's coordinates	
-		pointMap = self.toMapCoordinates(layer, point)
+      #transformation from layer coordinates to map's coordinates	
+  		pointMap = self.toMapCoordinates(layer, point)
 
-    #First map coordinates
-		self.x0 = pointMap.x()
-		self.y0 = pointMap.y()		
-		if self.rb:return
+      #First map coordinates
+  		self.x0 = pointMap.x()
+  		self.y0 = pointMap.y()		
+  		if self.rb:return
 		    
     def canvasMoveEvent(self,event):
         if not self.rb:return

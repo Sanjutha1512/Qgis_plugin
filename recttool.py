@@ -24,15 +24,15 @@ class RectTool:
 
    
         settings = QSettings()
+        
         #Set the button on toolbar
         self.rectbyextent = QAction(QIcon(":/plugins/QuickDigitize/rectByExtent.svg"), QCoreApplication.translate("ctools", "Rectangle by extent"),  self.iface.mainWindow())
 
         self.rectbyextent.setCheckable(True)
-        # self.rectbyextent.setEnabled(False)
-        
+
         
         #When button clicked connect to said function
-        self.rectbyextent.triggered.connect(self.rectbyextentdigit)
+        self.rectbyextent.triggered.connect(self.rectbyextenttool)
         self.canvas.mapToolSet.connect(self.deactivate)
 
         toolBar.addSeparator()
@@ -43,7 +43,7 @@ class RectTool:
         self.rectbyextenttool = RectByExtentTool( self.canvas )
     
     #To enable function for creating feature
-    def rectbyextentdigit(self):          
+    def rectbyextenttool(self):          
         self.canvas.setMapTool(self.rectbyextenttool)
         self.rectbyextent.setChecked(True)
         QObject.connect(self.rectbyextenttool, SIGNAL("rbFinished(PyQt_PyObject)"), self.createFeature)  
@@ -71,15 +71,6 @@ class RectTool:
                                     
         f.setGeometry(geom)
         
-        # add attribute fields to feature
-        fields = layer.pendingFields()
-
-        # vector api change update
-
-        f.initAttributes(fields.count())
-        for i in range(fields.count()):
-            f.setAttribute(i,provider.defaultValue(i))
-
         if not (settings.value("/qgis/digitizing/disable_enter_attribute_values_dialog")):
             self.iface.openFeatureForm( layer, f, False)
         
@@ -87,20 +78,6 @@ class RectTool:
         layer.addFeature(f)
         layer.endEditCommand()
 
-
-    def changegeom(self, result):
-        mc = self.canvas
-        layer = mc.currentLayer()
-        renderer = mc.mapRenderer()
-        layerCRSSrsid = layer.crs().srsid()
-        projectCRSSrsid = renderer.destinationCrs().srsid()
-        geom = result[0]
-        fid = result[1]
-        if layerCRSSrsid != projectCRSSrsid:
-            geom.transform(QgsCoordinateTransform(projectCRSSrsid, layerCRSSrsid))
-        layer.beginEditCommand("Feature rotated")
-        layer.changeGeometry( fid, geom )
-        layer.endEditCommand()
         
     def unload(self):
 		self.toolBar.removeAction(self.rectbyextent)

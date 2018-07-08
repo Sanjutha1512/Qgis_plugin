@@ -234,7 +234,7 @@ class QuickDigitize:
                 self.tr(u'&QuickDigitize'),
                 action)
             self.iface.removeToolBarIcon(action)
-
+        self.iface.removePluginVectorMenu(u'Digitize Spline',self.settingsAction)
 
         # remove the toolbar
         del self.toolbar
@@ -244,7 +244,7 @@ class QuickDigitize:
         # if SettingsDialog was created with iface.mainWindow() as parent
         #self.settingsDialog = SettingsDialog(self.iface.mainWindow())
         self.settingsDialog = SettingsDialog()
-        self.settingsDialog.changed.connect( self.spline.settingsChanged )
+        self.settingsDialog.changed.connect( self.spline.settingsChanged)
         self.settingsDialog.show()
 
     def select_output_file(self):

@@ -117,5 +117,8 @@ class SplineTool():
         else:
            self.action_spline.setEnabled(False)
            # self.mc.mapToolSet.connect(self.deactivate)
-           # self.action_spline.setChecked(True)    
-        
+           # self.action_spline.setChecked(True)  
+
+    def settingsChanged(self):
+
+      self.tool.refresh()
