@@ -77,6 +77,7 @@ class AddAttributeGui(QDialog, QWidget, Ui_AddAttribute):
                 with open('C:\Users\Sanjutha Indrajit\.qgis2\python\plugins\QuickDigitize'+ self.file) as csvfile:
                     readCSV = csv.reader(csvfile, delimiter=';')
                     for row in readCSV:
+                       
                         print(row[0])
                         a=row[2]
                         self.classes.append(a)

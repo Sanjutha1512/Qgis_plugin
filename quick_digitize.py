@@ -40,7 +40,7 @@ from createpointlayertool import CreatePointLayerTool
 from createlinelayertool import CreateLineLayerTool
 from createpolygonlayertool import CreatePolygonLayerTool
 from splinetool import SplineTool
-from rectovaldigittool import RectOvalDigit
+from recttool import RectTool
 from settingsdialog import SettingsDialog
 
 import os.path, sys
@@ -104,7 +104,7 @@ class QuickDigitize:
         self.createlinelayer= CreateLineLayerTool(self.iface, self.toolbar)
         self.createpolygonlayer= CreatePolygonLayerTool(self.iface, self.toolbar)
         self.spline= SplineTool(self.iface, self.toolbar)
-        self.rectangle=RectOvalDigit(self.iface,self.toolbar)
+        self.rectangle=RectTool(self.iface,self.toolbar)
 
 
         toolbars = iface.mainWindow().findChildren(QToolBar)

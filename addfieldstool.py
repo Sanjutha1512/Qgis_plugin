@@ -97,9 +97,15 @@ class AddFieldsTool:
                 print self.field_type
 
         for n in range(1,len(self.fields)):
-            self.qgsfields=self.fields[n]
-            # self.qgsfields_1=self.field_type[n]
-            self.layer.dataProvider().addAttributes([QgsField(self.qgsfields, QVariant.String)])
+            if self.fields[n] == "Width":
+                self.qgsfields=self.fields[n]
+                # self.qgsfields_1=self.field_type[n]
+                self.layer.dataProvider().addAttributes([QgsField(self.qgsfields, QVariant.Double)])
+            else:
+                self.qgsfields=self.fields[n]
+                # self.qgsfields_1=self.field_type[n]
+                self.layer.dataProvider().addAttributes([QgsField(self.qgsfields, QVariant.String)])
+                
         # self.layer.dataProvider().addAttributes([QgsField('asdssa',QVariant.Double)])
         self.layer.updateFields()
 
