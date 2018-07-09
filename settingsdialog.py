@@ -1,22 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-/***************************************************************************
-  Spline plugin SettingsDialog
-                             -------------------
-        begin                : 2014-02-05
-        copyright            : (C) 2014 by Radim Blažek
-        email                : radim.blazek@gmail.com
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-"""
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -59,12 +42,7 @@ class SettingsDialog( QDialog, Ui_SettingsDialog ):
     def cancel(self):
         self.close()
 
-    # Disabled because there were too many buttons
-    #def reset(self):
-        ## reset to orig values (when dialog was opened)
-        #self.splineToleranceSpinBox.setValue( self.tolerance )
-        #self.splineTightnessSpinBox.setValue(  self.tightness )
-
+    
     def defaults(self):
         self.splineToleranceSpinBox.setValue( DEFAULT_TOLERANCE )
         self.splineTightnessSpinBox.setValue( DEFAULT_TIGHTNESS )

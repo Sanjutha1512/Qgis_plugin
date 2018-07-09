@@ -1,29 +1,11 @@
-"""
-/***************************************************************************
-    Digitize spline, based on CircularArcDigitizer (Stefan Ziegler)
-    and Generalizer plugin (Piotr Pociask) which is based on GRASS v.generalize
-                              -------------------
-        begin                : February 2014
-        copyright            : (C) 2014 by Radim Blazek
-        email                : radim.blazek@gmail.com
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-"""
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.gui import *
 import math
 
-#from circulararc import CircularArc
 import utils
 
 
@@ -255,17 +237,6 @@ class Spline(QgsMapTool):
 
             output.append(p0)
 
-            # It would be better to divide each segment to steps according 
-            # to tolerance but how to find maximum step size for tolerance?
-            # It should be probably possible for with some math.
-            #step = ???
-            #dist = self.pointsDist(p0, p1)
-            #if dist == 0 or dist < step:
-                #continue
-            #else:
-                #t = float(step)/dist
-
-            # for now we just make 50 points (more may become slow) and prune them using tolerance
             t = 1. / 50
 
             s = t
@@ -288,8 +259,7 @@ class Spline(QgsMapTool):
 
         output.append(p1) # last point
 
-        # now we have mix of points and point lists, we clean the lists
-        # keeping the digitized points
+        
         result = []
         for i in range(len(output)):
             p = output[i]

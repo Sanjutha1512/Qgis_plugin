@@ -20,7 +20,7 @@ class CreatePolygonLayerGui(QDialog, QWidget, Ui_CreateLayer):
 
 
         self.cancelButton.clicked.connect(self.close_1) 
-        self.okButton.clicked.connect(self.Point)
+        self.okButton.clicked.connect(self.Polygon)
         self.lineEdit.clear()
 
     def initGui(self):
@@ -29,7 +29,7 @@ class CreatePolygonLayerGui(QDialog, QWidget, Ui_CreateLayer):
 
         pass
 
-    def Point(self):
+    def Polygon(self):
         name_of_layer= self.lineEdit.text()
         vl = QgsVectorLayer("Polygon", name_of_layer, "memory")
         pr = vl.dataProvider()

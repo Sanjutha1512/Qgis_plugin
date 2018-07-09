@@ -1,7 +1,5 @@
 # -*- coding: latin1 -*-
-# from PyQt4.QtCore import *
-# import sip
-# sip.setapi('QString', 1)
+
 from PyQt4.QtGui import *
 from qgis.core import *
 from qgis.PyQt.QtCore import *

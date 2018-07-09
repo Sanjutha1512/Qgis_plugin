@@ -16,10 +16,7 @@ class AddStyleGui(QDialog, QWidget, Ui_AddStyle):
         self.okButton = self.buttonBox.button(QDialogButtonBox.Ok)
         
         self.cancelButton = self.buttonBox.button(QDialogButtonBox.Cancel)
-
-
         self.cancelButton.clicked.connect(self.close_1) 
-        #self.okButton.clicked.connect(self.Point)
         
     def select_style_file(self):
         filename = QFileDialog.getOpenFileName(self, "Select style file ","", '*.qml')

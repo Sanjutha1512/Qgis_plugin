@@ -50,13 +50,7 @@ def addGeometryToLayer(g,iface):
         layer.updateExtents()
 
 def getCadLayerByName(cadname, iface):
-    # layermap = QgsMapLayerRegistry.instance().mapLayers()
-    # for name, layer in layermap.iteritems():
-    #     if layer.name() == cadname:
-    #         if layer.isValid():
-    #             return layer
-    #         else:
-    #             return None 
+    
         layer = iface.activeLayer()  
         return layer     
 
@@ -191,7 +185,6 @@ def rotate(geom,  point,  angle):
 
 
 # Rotates a single point (centre 0/0).
-# (c) Stefan Ziegler
 def rotatePoint(point,  angle):
     x = math.cos(angle)*point.x() - math.sin(angle)*point.y()
     y = math.sin(angle)*point.x() + math.cos(angle)*point.y()

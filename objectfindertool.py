@@ -102,37 +102,6 @@ class VertexAndObjectFinderTool(QgsMapTool):
             if self.count > 1:
                 self.vertexAndObjectFound.emit([self.cf,  self.m1,  self.rb])
                 
-        ## Then we have to select a vertex point (=centre of rotation).
-        # elif self.count % 2 == 1:
-        
-        #     x = event.pos().x()
-        #     y = event.pos().y()
-            
-        #     layer = self.canvas.currentLayer()
-            
-        #     if layer is not None:
-        #       startingPoint = QPoint(x,y)
-        #       snapper = QgsMapCanvasSnapper(self.canvas)
-        #       (retval,result) = snapper.snapToCurrentLayer (startingPoint,QgsSnapper.SnapToVertex)
-                               
-        #       if result == []:
-        #           (retval,result) = snapper.snapToBackgroundLayers(startingPoint)
-        #       if result <> []:
-        #         self.p1.setX( result[0].snappedVertex.x() )  
-        #         self.p1.setY( result[0].snappedVertex.y() )  
-                
-        #         if self.m1 is None:
-        #             self.m1 = QgsVertexMarker(self.canvas)
-        #             self.m1.setIconType(3)
-        #             self.m1.setColor(QColor(255,0,0))
-        #             self.m1.setIconSize(12)
-        #             self.m1.setPenWidth (3)            
-        #         self.m1.setCenter(self.p1)
-
-        #         self.count += 1
-
-        #         if self.count > 1:
-        #             self.vertexAndObjectFound.emit([self.cf,  self.m1,  self.rb])
                     
 
     def canvasMoveEvent(self,event):

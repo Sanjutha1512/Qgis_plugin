@@ -9,7 +9,7 @@ from QuickDigitize import resources
 from vertexfindertool import VertexFinderTool
 from showazimuthgui import ShowAzimuthGui
 from azimuth import Azimuth
-#import cadutils
+
 
 class ShowAzimuthTool:
     
@@ -112,9 +112,6 @@ class ShowAzimuthTool:
                 self.ctrl.show()
                 self.ctrl.writeAzimuth(az)
                 
-                # connect the signals
-#                self.ctrl.distancesFromPoints.connect(self.calculateArcIntersection)
-#                self.ctrl.closeArcIntersectionGui.connect(self.deactivate)
                 self.ctrl.unsetTool.connect(self.unsetTool)
             
             
@@ -128,7 +125,7 @@ class ShowAzimuthTool:
         def deactivate(self):
             self.p1 = None
             self.p2 = None
-            #uncheck the button/menu and get rid off the SFtool signal
+            #uncheck the button/menu 
             self.act_s2v.setChecked(False)
             
 

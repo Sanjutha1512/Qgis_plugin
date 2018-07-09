@@ -1,25 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-/***************************************************************************
- QuickDigitize
-                                 A QGIS plugin
- Combines advanced digitization
-                              -------------------
-        begin                : 2018-06-18
-        git sha              : $Format:%H$
-        copyright            : (C) 2018 by Pratik and Sanjutha
-        email                : sanjuthaindrajit97@gmail.com
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-"""
 from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QFileInfo, QSize, QVariant
 from PyQt4.QtGui import QAction, QIcon, QFileDialog, QToolBar
 from qgis.core import *
@@ -34,13 +14,14 @@ from vertexfindertool import VertexFinderTool
 from rotateobjecttool import RotateObjectTool
 from showazimuthtool import ShowAzimuthTool
 from addattributetool import AddAttributeTool
+from orthogonaldigitizertool import OrthogonalDigitizerTool
 from addfieldstool import AddFieldsTool
 from addstyletool import AddStyleTool
 from createpointlayertool import CreatePointLayerTool
 from createlinelayertool import CreateLineLayerTool
 from createpolygonlayertool import CreatePolygonLayerTool
 from splinetool import SplineTool
-from rectovaldigittool import RectOvalDigit
+from recttool import RectTool
 from settingsdialog import SettingsDialog
 
 import os.path, sys
@@ -95,16 +76,18 @@ class QuickDigitize:
         # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = self.iface.addToolBar(u'QuickDigitize')
         self.toolbar.setObjectName(u'QuickDigitize')
-        self.showazimuth = ShowAzimuthTool(self.iface,  self.toolbar)
-        self.rotateobject = RotateObjectTool(self.iface,  self.toolbar)
-        self.addattribute = AddAttributeTool(self.iface, self.toolbar)
-        self.addfields = AddFieldsTool(self.iface, self.toolbar)
-        self.addstyle = AddStyleTool(self.iface, self.toolbar)
         self.createpointlayer= CreatePointLayerTool(self.iface, self.toolbar)
         self.createlinelayer= CreateLineLayerTool(self.iface, self.toolbar)
         self.createpolygonlayer= CreatePolygonLayerTool(self.iface, self.toolbar)
         self.spline= SplineTool(self.iface, self.toolbar)
-        self.rectangle=RectOvalDigit(self.iface,self.toolbar)
+        self.ortho= OrthogonalDigitizerTool(self.iface,self.toolbar)
+        self.rectangle=RectTool(self.iface,self.toolbar)
+        self.addattribute = AddAttributeTool(self.iface, self.toolbar)
+        self.addfields = AddFieldsTool(self.iface, self.toolbar)
+        self.showazimuth = ShowAzimuthTool(self.iface,  self.toolbar)
+        self.rotateobject = RotateObjectTool(self.iface,  self.toolbar)
+        self.addstyle = AddStyleTool(self.iface, self.toolbar)
+        
 
 
         toolbars = iface.mainWindow().findChildren(QToolBar)
@@ -144,45 +127,7 @@ class QuickDigitize:
         status_tip=None,
         whats_this=None,
         parent=None):
-        """Add a toolbar icon to the toolbar.
-
-        :param icon_path: Path to the icon for this action. Can be a resource
-            path (e.g. ':/plugins/foo/bar.png') or a normal file system path.
-        :type icon_path: str
-
-        :param text: Text that should be shown in menu items for this action.
-        :type text: str
-
-        :param callback: Function to be called when the action is triggered.
-        :type callback: function
-
-        :param enabled_flag: A flag indicating if the action should be enabled
-            by default. Defaults to True.
-        :type enabled_flag: bool
-
-        :param add_to_menu: Flag indicating whether the action should also
-            be added to the menu. Defaults to True.
-        :type add_to_menu: bool
-
-        :param add_to_toolbar: Flag indicating whether the action should also
-            be added to the toolbar. Defaults to True.
-        :type add_to_toolbar: bool
-
-        :param status_tip: Optional text to show in a popup when mouse pointer
-            hovers over the action.
-        :type status_tip: str
-
-        :param parent: Parent widget for the new action. Defaults None.
-        :type parent: QWidget
-
-        :param whats_this: Optional text to show in the status bar when the
-            mouse pointer hovers over the action.
-
-        :returns: The action that was created. Note that the action is also
-            added to self.actions list.
-        :rtype: QAction
-        """
-
+        
         # Create the dialog (after translation) and keep reference
         self.dlg = QuickDigitizeDialog()
 
@@ -234,17 +179,15 @@ class QuickDigitize:
                 self.tr(u'&QuickDigitize'),
                 action)
             self.iface.removeToolBarIcon(action)
-
+        self.iface.removePluginVectorMenu(u'Digitize Spline',self.settingsAction)
 
         # remove the toolbar
         del self.toolbar
 
     def openSettings(self):
-        # button signals in SettingsDialog were not working on Win7/64
-        # if SettingsDialog was created with iface.mainWindow() as parent
-        #self.settingsDialog = SettingsDialog(self.iface.mainWindow())
+        
         self.settingsDialog = SettingsDialog()
-        self.settingsDialog.changed.connect( self.spline.settingsChanged )
+        self.settingsDialog.changed.connect( self.spline.settingsChanged)
         self.settingsDialog.show()
 
     def select_output_file(self):
@@ -252,7 +195,7 @@ class QuickDigitize:
 	    self.dlg.lineEdit.setText(filename)
 
     def run(self):
-        """Run method that performs all the real work"""
+        
         layers = self.iface.legendInterface().layers()
         layer_list = []
         for layer in layers:
@@ -265,8 +208,7 @@ class QuickDigitize:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
+            
             filename = self.dlg.lineEdit.text()
             output_file = open(filename, 'w')
 
